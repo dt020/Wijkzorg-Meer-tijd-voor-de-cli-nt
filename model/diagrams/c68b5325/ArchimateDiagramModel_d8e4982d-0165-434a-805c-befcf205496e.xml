@@ -245,7 +245,7 @@
         targetConnections="ffa654ba-0c75-4f70-85c0-59b9882db9bb 48f189af-fe98-4fbf-8313-848c9453e88c">
       <bounds
           x="48"
-          y="36"
+          y="48"
           width="120"
           height="55"/>
       <archimateElement
@@ -441,7 +441,7 @@
         targetConnections="3a4694dd-e7a4-4a01-97c1-05cce5c52472">
       <bounds
           x="48"
-          y="36"
+          y="48"
           width="120"
           height="55"/>
       <archimateElement
