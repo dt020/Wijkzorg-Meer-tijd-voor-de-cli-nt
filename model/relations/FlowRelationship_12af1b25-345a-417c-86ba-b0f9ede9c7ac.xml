@@ -1,0 +1,12 @@
+<archimate:FlowRelationship
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:archimate="http://www.archimatetool.com/archimate"
+    name="iWmo zip's"
+    id="12af1b25-345a-417c-86ba-b0f9ede9c7ac">
+  <source
+      xsi:type="archimate:BusinessActor"
+      href="BusinessActor_3c9dab7e-34a2-4f5f-9c8d-df139347d74e.xml#3c9dab7e-34a2-4f5f-9c8d-df139347d74e"/>
+  <target
+      xsi:type="archimate:BusinessActor"
+      href="BusinessActor_e85d66d5-90af-47ad-a0a6-1b86ecffe9fc.xml#e85d66d5-90af-47ad-a0a6-1b86ecffe9fc"/>
+</archimate:FlowRelationship>

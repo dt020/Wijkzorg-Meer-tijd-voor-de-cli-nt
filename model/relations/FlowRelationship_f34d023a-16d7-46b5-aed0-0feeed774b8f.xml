@@ -1,6 +1,7 @@
 <archimate:FlowRelationship
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:archimate="http://www.archimatetool.com/archimate"
+    name="iWmo StUF"
     id="f34d023a-16d7-46b5-aed0-0feeed774b8f">
   <source
       xsi:type="archimate:ApplicationComponent"
