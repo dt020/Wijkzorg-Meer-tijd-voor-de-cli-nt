@@ -1,12 +1,11 @@
-<archimate:FlowRelationship
+<archimate:RealizationRelationship
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:archimate="http://www.archimatetool.com/archimate"
-    name="iWmo StUF"
-    id="f34d023a-16d7-46b5-aed0-0feeed774b8f">
+    id="995d90a8-2373-42fc-84a2-415437361a19">
   <source
       xsi:type="archimate:ApplicationComponent"
-      href="ApplicationComponent_d9cc1739.xml#d9cc1739"/>
+      href="ApplicationComponent_b9fee3ae-a40b-43f2-9672-ba8de83f694e.xml#b9fee3ae-a40b-43f2-9672-ba8de83f694e"/>
   <target
       xsi:type="archimate:ApplicationService"
       href="ApplicationService_5a7c112b-a493-4421-9b0f-827be6f16935.xml#5a7c112b-a493-4421-9b0f-827be6f16935"/>
-</archimate:FlowRelationship>
+</archimate:RealizationRelationship>
