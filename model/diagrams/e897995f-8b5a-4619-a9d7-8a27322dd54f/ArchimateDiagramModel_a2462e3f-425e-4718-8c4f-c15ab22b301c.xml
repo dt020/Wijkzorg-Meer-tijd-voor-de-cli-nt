@@ -32,7 +32,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="06178642-a88d-41fd-83b3-256eaa67fd28">
     <bounds
-        x="1189"
+        x="1296"
         y="768"
         width="120"
         height="55"/>
@@ -44,7 +44,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="ebfbdcab-eaff-40e9-b206-1dbfe28e2b4d">
     <bounds
-        x="1189"
+        x="1296"
         y="696"
         width="120"
         height="55"/>
@@ -278,7 +278,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="70f28aa0-17cf-443e-93e0-b4c1896a5eae">
     <bounds
-        x="1176"
+        x="1283"
         y="584"
         width="145"
         height="91"/>
@@ -291,6 +291,11 @@
           id="ca3fb4ab-a389-431b-a609-7fa8a54b2372"
           source="44fe7960-b905-475b-8010-6484e0857366"
           target="9544bb05-2537-49c9-8884-c4f1b36258a1">
+        <bendpoints
+            startX="13"
+            startY="-263"
+            endX="13"
+            endY="267"/>
         <archimateRelationship
             xsi:type="archimate:FlowRelationship"
             href="FlowRelationship_55431b75.xml#55431b75"/>
@@ -336,7 +341,7 @@
           href="FlowRelationship_51db602b-e5f5-4751-9468-c0b58978a336.xml#51db602b-e5f5-4751-9468-c0b58978a336"/>
     </sourceConnections>
     <bounds
-        x="1176"
+        x="1283"
         y="54"
         width="145"
         height="85"/>
@@ -349,11 +354,6 @@
           id="fdcfda3e-4ea9-4448-90eb-1e76e9bc4ed1"
           source="9544bb05-2537-49c9-8884-c4f1b36258a1"
           target="44fe7960-b905-475b-8010-6484e0857366">
-        <bendpoints
-            startX="12"
-            startY="219"
-            endX="12"
-            endY="-203"/>
         <archimateRelationship
             xsi:type="archimate:FlowRelationship"
             href="FlowRelationship_23858357.xml#23858357"/>
@@ -1125,5 +1125,50 @@
     <archimateElement
         xsi:type="archimate:ApplicationComponent"
         href="ApplicationComponent_36e86eca-d970-495a-83f3-e973769c6d15.xml#36e86eca-d970-495a-83f3-e973769c6d15"/>
+  </children>
+  <children
+      xsi:type="archimate:DiagramModelArchimateObject"
+      id="4e229e3a-d96a-431a-94f4-25253419caf8">
+    <sourceConnections
+        xsi:type="archimate:DiagramModelArchimateConnection"
+        id="3db84e21-653d-4eb1-a530-9807ac062989"
+        source="4e229e3a-d96a-431a-94f4-25253419caf8"
+        target="5766591e-8935-46c1-bb65-180bc28d1c03">
+      <archimateRelationship
+          xsi:type="archimate:RealizationRelationship"
+          href="RealizationRelationship_846f56f9-26e0-4bb4-887f-7a4ea6155e76.xml#846f56f9-26e0-4bb4-887f-7a4ea6155e76"/>
+    </sourceConnections>
+    <bounds
+        x="1201"
+        y="360"
+        width="120"
+        height="55"/>
+    <archimateElement
+        xsi:type="archimate:ApplicationComponent"
+        href="ApplicationComponent_97da04e4-141a-4faf-94ec-7925f6c15248.xml#97da04e4-141a-4faf-94ec-7925f6c15248"/>
+  </children>
+  <children
+      xsi:type="archimate:DiagramModelArchimateObject"
+      id="5766591e-8935-46c1-bb65-180bc28d1c03"
+      targetConnections="3db84e21-653d-4eb1-a530-9807ac062989">
+    <bounds
+        x="1201"
+        y="288"
+        width="120"
+        height="55"/>
+    <archimateElement
+        xsi:type="archimate:ApplicationService"
+        href="ApplicationService_9480d2d0-bc94-4f16-81e3-ba819c8e98bb.xml#9480d2d0-bc94-4f16-81e3-ba819c8e98bb"/>
+  </children>
+  <children
+      xsi:type="archimate:DiagramModelNote"
+      id="b31aa579-dcc4-40a6-95ae-208f8554e754"
+      textAlignment="1"
+      content="Digitaal Stelsel Wijkzorg Amsterdam&#xD;&#xA;Overview&#xD;&#xA;Globaal ontwerp ihkv MTeIvdC&#xD;&#xA;Versie 20180619">
+    <bounds
+        x="24"
+        y="768"
+        width="211"
+        height="67"/>
   </children>
 </archimate:ArchimateDiagramModel>
