@@ -1,0 +1,445 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/Wijkzorg-Amsterdam/DSWA/1.0.0
+info:
+  description: "Dit is de API koppelvlak beschrijving van het Digitaal Stelsel Wijkzorg Amsterdam. De volgende ontwerpprincipes zijn hierbij gehanteerd: simpel, sober, lichtgewicht, resource-oriented, geen toeters en bellen, consistent, bruikbaar voor en vanuit de cliëntvolgsystemen van ketenpartners, ten behoeve van goede zorg en ondersteuning aan cliënten en de daarvoor vereiste samenwerking en informatie-uitwisseling. Een stelsel dat recht doet aan de AVG, en bestand is tegen onbedoeld gebruik. Het stelsel bevat voor iedere aparte functionaliteit een aparte component, iedere component is breder toepasbaar, dus niet alleen voor de Wijkzorg, en niet alleen voor gemeente Amsterdam."
+  version: "1.0.0"
+  title: Digitaal Stelsel Wijkzorg Amsterdam API
+  contact:
+    email: d.temme @ amsterdam . nl
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: beheerders
+    description: Calls die alleen voor beheerders beschikbaar worden gesteld
+  - name: regievoerder
+    description: Calls die alleen voor regievoerders beschikbaar worden gesteld. Een regievoerder coördineert de zorg en ondersteuning rondom een cliënt, is inhoudelijk aanspreekpunt voor andere professionals. Een regievoerder heeft extra regievoerende taken en verantwoordelijkheden ten opzichte van andere professionals. Klanthouders, klantmanagers, trajecthouders zijn voorbeelden van regievoerders. 
+  - name: professionals
+    description: Calls die voor professionals beschikbaar worden gesteld. Een regievoerder is ook altijd een professional, maar niet iedere  professional is ook regievoerder.
+  - name: administratie
+    description: Calls die voor administratieve krachten beschikbaar worden gesteld. Een administratieve kracht kan niet tegelijkertijd de rol wijkzorgprofessional of klanthouder hebben
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /woonplaatscheck:
+    get:
+      tags:
+        - wijkzorgprofessionals
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van degene van wie je de woonplaats wilt controleren
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: geboortedatum
+          description: Geboortedatum van degene van wie je de woonplaats wilt controleren
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Woonplaats'
+        '400':
+          description: bad input parameter
+  /regiecheck:
+    get:
+      tags:
+        - wijkzorgprofessionals
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van degene van wie je de regievoerder(s) wilt opzoeken
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: geboortedatum
+          description: Geboortedatum van degene van wie je de regievoerder(s) wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Regievoerder'
+        '400':
+          description: bad input parameter
+  /planmaker:
+    get:
+      tags:
+        - regievoerder
+      parameters:
+
+  /planmaker/template:
+    get:
+      tags:
+        - regievoerder
+      parameters:
+
+  /plan:
+    get:
+      tags:
+        - regievoerder
+      parameters:
+        - in: query
+          name: id
+          description: Id van het plan dat je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+        '400':
+          description: bad input parameter
+
+  /regievoerder:
+    get:
+      parameters:
+        - in: query
+          name: naam
+          description: Naam van de regievoerder die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Regievoerder'
+        '400':
+          description: bad input parameter
+    post:
+      summary: Voegt een Regievoerder toe
+      operationId: addRegievoerder
+      description: Voegt een Regievoerder toe aan de ZCI
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Regievoerder'
+        description: De Regievoerder die aan de ZCI toegevoegd moet worden
+  /AnoniemeClient:
+    get:
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van de cliënt die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnoniemeClient'
+        '400':
+          description: bad input parameter
+    post:
+      summary: Voegt een AnoniemeClient toe
+      operationId: addAnoniemeClient
+      description: Voegt een AnoniemeClient toe aan de ZCI
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Regievoerder'
+        description: De AnoniemeClient die aan de ZCI toegevoegd moet worden
+  /regievoering:
+    get:
+      summary: Zoekt de regievoerende professionals van een cliënt
+      operationId: zoekRegievoerders
+      description: Aan de hand van het BSN van een cliënt worden de contactgegevens van de bij de cliënt betrokken regievoerende professionals geleverd 
+      parameters:
+        - in: query
+          name: regievoerder
+          description: Naam van de regievoerder die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Regievoerder'
+        '400':
+          description: bad input parameter
+    post:
+      summary: Voegt een Regievoering relatie toe
+      operationId: addRegievoering
+      description: Voegt een Regievoering relatie toe aan de ZCI
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Regievoerder'
+        description: De Regievoering relatie die aan de ZCI toegevoegd moet worden
+  /inventory:
+    get:
+      tags:
+        - developers
+      summary: searches inventory
+      operationId: searchInventory
+      description: |
+        By passing in the appropriate options, you can search for
+        available inventory in the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up inventory
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: skip
+          description: number of records to skip for pagination
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - in: query
+          name: limit
+          description: maximum number of records to return
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+            maximum: 50
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - admins
+      summary: adds an inventory item
+      operationId: addInventory
+      description: Adds an item to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryItem'
+        description: Inventory item to add
+components:
+  schemas:
+    AnoniemeClient:
+      type: object
+      required:
+        - bsn
+        - geboortedatum
+      properties:
+        bsn:
+          type: string
+          example: 414633106
+        geboortedatum:
+          type: string
+          example: 1999-12-31
+    Woonplaats:
+      type: object
+      required:
+        - woonplaats
+      properties:
+        woonplaats:
+          type: string
+          example: Amsterdam / Weesp
+    Regievoerder:
+      type: object
+      required:
+        - naam
+        - tel
+        - e-mail
+      properties:
+        id:
+          type: string
+          example: a864abb6-e9cf-4fac-935a-bc17c7376327
+        naam:
+          type: string
+          example: Jan Jansen
+        tel:
+          type: string
+          example: 0612345678
+        e-mail:
+          type: string
+          example: jan.jansen@zorgt.nl
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        regievoerder-url:
+          type: string
+          example: https://cordaan.nl/professionals/0b562e54-4983-49ae-af30-c01d223408b2
+    Regievoering:
+      type: object
+      required:
+        - regievoerder-id
+        - client-bsn
+      properties:
+        regievoerder-uri:
+          type: string
+          example: Jan Jansen
+        client-bsn:
+          type: string
+          example: 414633106
+        start-regievoering:
+          type: string
+          example: 2017-07-30
+        einde-regievoering:
+          type: string
+          example: 2017-07-30
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        oproep:
+          type: string
+          example: Contact opnemen dringend noodzakelijk!!!
+    Plan:
+      type: object
+      required:
+        - id
+        - url
+        - client
+        - datum-opgesteld
+        - ondertekend-door-client
+        - ondertekend-door-opsteller
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          example: https://zorgt.nl/ondersteuningsplan/0b562e54-4983-49ae-af30-c01d223408b2
+        datum-opgesteld:
+          type: string
+          example: '2016-08-29'
+        ondertekening:
+          $ref: '#/components/schemas/Ondertekening'
+        opsteller:
+          $ref: '#/components/schemas/Regievoerder'
+    Ondertekening:
+      type: object
+      required:
+        - id
+        - url
+        - ondertekenaar
+        - datum
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          example: https://zorgt.nl/ondertekening/0b562e54-4983-49ae-af30-c01d223408b2
+        datum:
+          type: string
+          example: '2016-08-29'
+        ondertekenaar:
+          $ref: '#/components/schemas/AnoniemeClient'
+        ondertekende-plan:
+          $ref: '#/components/schemas/Plan'
+    InventoryItem:
+      type: object
+      required:
+        - id
+        - name
+        - manufacturer
+        - releaseDate
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Widget Adapter
+        releaseDate:
+          type: string
+          format: int32
+          example: '2016-08-29T09:12:33.001Z'
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+    Manufacturer:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: ACME Corporation
+        homePage:
+          type: string
+          format: url
+          example: 'https://www.acme-corp.com'
+        phone:
+          type: string
+          example: 408-867-5309
+      type: object
