@@ -847,7 +847,7 @@
         xsi:type="archimate:DiagramModelArchimateObject"
         id="a2110a9a-200b-4de8-a5c9-bfab71d476a8"
         targetConnections="69e4b1d2-813c-4b84-9b99-15809ff6cc57 0cad49f0-fb5e-4202-be36-922e02827ae0"
-        fontColor="#808080">
+        fontColor="#000000">
       <bounds
           x="299"
           y="300"
@@ -861,7 +861,7 @@
         xsi:type="archimate:DiagramModelArchimateObject"
         id="b35c852e-b426-4f31-8075-c06ac999562d"
         targetConnections="2ac0f29c-4599-46c8-abb7-4eb723ad5f78 a9b3d2af-cfcc-48bb-a60a-5ad55ba11564"
-        fontColor="#808080">
+        fontColor="#000000">
       <bounds
           x="443"
           y="300"
@@ -875,7 +875,7 @@
         xsi:type="archimate:DiagramModelArchimateObject"
         id="3ce9e720-15ff-4a9d-8ed3-f5fd93141b9e"
         targetConnections="2b31619a-ada5-48b2-9fac-559ec75154cf"
-        fontColor="#c0c0c0">
+        fontColor="#000000">
       <sourceConnections
           xsi:type="archimate:DiagramModelArchimateConnection"
           id="a9b3d2af-cfcc-48bb-a60a-5ad55ba11564"
@@ -898,7 +898,7 @@
         xsi:type="archimate:DiagramModelArchimateObject"
         id="f568a157-fa9e-4f5c-96ef-018d604634b7"
         targetConnections="eb8e1484-6c77-4e74-92b3-9224407da779"
-        fontColor="#c0c0c0">
+        fontColor="#000000">
       <sourceConnections
           xsi:type="archimate:DiagramModelArchimateConnection"
           id="0cad49f0-fb5e-4202-be36-922e02827ae0"
@@ -1318,7 +1318,7 @@
       xsi:type="archimate:DiagramModelNote"
       id="c072cf97-235b-40b5-99d4-e62c141d9d82"
       textAlignment="1"
-      content="Digitaal Stelsel Wijkzorg Amsterdam&#xD;&#xA;Overview, Plateau 1&#xD;&#xA;Globaal ontwerp ihkv MTeIvdC&#xD;&#xA;Versie 20181101">
+      content="Digitaal Stelsel Wijkzorg Amsterdam&#xD;&#xA;Overview, Plateau 1&#xD;&#xA;Globaal ontwerp ihkv MTeIvdC&#xD;&#xA;Versie 20181203">
     <bounds
         x="1668"
         y="918"
