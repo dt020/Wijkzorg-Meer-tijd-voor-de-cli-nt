@@ -32,7 +32,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="777f5eb9-cde4-4c5e-94a5-db0843ecd5a6">
     <bounds
-        x="1632"
+        x="1656"
         y="492"
         width="144"
         height="85"/>
@@ -56,7 +56,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="bc2051be-6e3f-45e7-9556-ff99fb07a1bf">
     <bounds
-        x="1632"
+        x="1656"
         y="588"
         width="144"
         height="85"/>
@@ -80,7 +80,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="062e16be-0d04-45a7-b8dc-0aef9a43e124">
     <bounds
-        x="1632"
+        x="1656"
         y="393"
         width="144"
         height="88"/>
@@ -280,7 +280,7 @@
       xsi:type="archimate:DiagramModelArchimateObject"
       id="20ccd10f-f036-4253-91ff-16a55ebadb6b">
     <bounds
-        x="1734"
+        x="1758"
         y="804"
         width="145"
         height="91"/>
@@ -343,7 +343,7 @@
           href="FlowRelationship_51db602b-e5f5-4751-9468-c0b58978a336.xml#51db602b-e5f5-4751-9468-c0b58978a336"/>
     </sourceConnections>
     <bounds
-        x="1734"
+        x="1758"
         y="54"
         width="145"
         height="85"/>
@@ -728,7 +728,7 @@
           href="RealizationRelationship_eeae83bd-40d3-4cc4-84f4-e7a71106792f.xml#eeae83bd-40d3-4cc4-84f4-e7a71106792f"/>
     </sourceConnections>
     <bounds
-        x="1500"
+        x="1524"
         y="492"
         width="120"
         height="55"/>
@@ -741,7 +741,7 @@
       id="bb6ff7a8-f154-4a01-9ad0-d068316c0adf"
       targetConnections="ee549018-0b76-49c9-9894-cf5cc4605361">
     <bounds
-        x="1500"
+        x="1524"
         y="420"
         width="120"
         height="55"/>
@@ -841,7 +841,7 @@
     <bounds
         x="180"
         y="258"
-        width="1297"
+        width="1320"
         height="439"/>
     <children
         xsi:type="archimate:DiagramModelArchimateObject"
@@ -1015,7 +1015,7 @@
       <bounds
           x="144"
           y="24"
-          width="1033"
+          width="1164"
           height="265"/>
       <children
           xsi:type="archimate:DiagramModelArchimateObject"
@@ -1275,7 +1275,7 @@
       <children
           xsi:type="archimate:DiagramModelArchimateObject"
           id="87261604-7e5d-45cf-a280-54bb95e451f0"
-          targetConnections="bc70f7c9-f207-4b9d-a88c-33854a4268f9">
+          targetConnections="bc70f7c9-f207-4b9d-a88c-33854a4268f9 c362d973-ee50-49a2-abe9-7eb505a59781">
         <bounds
             x="874"
             y="36"
@@ -1284,6 +1284,27 @@
         <archimateElement
             xsi:type="archimate:ApplicationFunction"
             href="ApplicationFunction_2ad03d81-9120-4d94-864f-3112b2ae0ab1.xml#2ad03d81-9120-4d94-864f-3112b2ae0ab1"/>
+      </children>
+      <children
+          xsi:type="archimate:DiagramModelArchimateObject"
+          id="c8b9382b-3458-4d3c-b408-167e7807bb50">
+        <sourceConnections
+            xsi:type="archimate:DiagramModelArchimateConnection"
+            id="c362d973-ee50-49a2-abe9-7eb505a59781"
+            source="c8b9382b-3458-4d3c-b408-167e7807bb50"
+            target="87261604-7e5d-45cf-a280-54bb95e451f0">
+          <archimateRelationship
+              xsi:type="archimate:RealizationRelationship"
+              href="RealizationRelationship_25640227-38ba-4f1b-a1db-4855ef842e72.xml#25640227-38ba-4f1b-a1db-4855ef842e72"/>
+        </sourceConnections>
+        <bounds
+            x="1020"
+            y="36"
+            width="120"
+            height="55"/>
+        <archimateElement
+            xsi:type="archimate:ApplicationComponent"
+            href="ApplicationComponent_e029b620-5a13-4097-a3f3-c993c4a11dff.xml#e029b620-5a13-4097-a3f3-c993c4a11dff"/>
       </children>
       <archimateElement
           xsi:type="archimate:Plateau"
@@ -1318,9 +1339,9 @@
       xsi:type="archimate:DiagramModelNote"
       id="c072cf97-235b-40b5-99d4-e62c141d9d82"
       textAlignment="1"
-      content="Digitaal Stelsel Wijkzorg Amsterdam&#xD;&#xA;Overview, Plateau 1&#xD;&#xA;Globaal ontwerp ihkv MTeIvdC&#xD;&#xA;Versie 20181203">
+      content="Digitaal Stelsel Wijkzorg Amsterdam&#xD;&#xA;Overview, Plateau 1&#xD;&#xA;Globaal ontwerp ihkv MTeIvdC&#xD;&#xA;Versie 20181214">
     <bounds
-        x="1668"
+        x="1692"
         y="918"
         width="211"
         height="67"/>
