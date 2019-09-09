@@ -1,0 +1,1126 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+info:
+  description: "Dit is de API koppelvlak beschrijving van het Digitaal Stelsel Wijkzorg Amsterdam (DSWA). Het DSWA faciliteert de informatie-uitwisseling tussen zorgaanbieders onderling, en met de gemeente.
+  
+  
+  De volgende ontwerpprincipes zijn hierbij gehanteerd:
+
+    * simpel, sober, lichtgewicht, geen toeters en bellen
+
+    * [resource-oriented](https://cloud.google.com/apis/design/resources)
+    
+    * [API-first](https://swagger.io/resources/articles/adopting-an-api-first-approach/)
+  
+    * consistent
+    
+    * herbruikbaar voor meerdere DSWA afnemers en verschillende doelgroepen
+    
+    * het stelsel doet recht aan de AVG
+    
+    * het stelsel is bestand tegen onbedoeld gebruik
+  
+
+Het stelsel en de API moeten bruikbaar zijn voor en vanuit de cli&euml;ntvolgsystemen van ketenpartners, en daarmee bijdragen aan goede zorg en ondersteuning aan cli&euml;nten en aan de daarvoor vereiste samenwerking en informatie-uitwisseling.
+
+
+Het stelsel bevat voor iedere aparte functionaliteit een aparte component. Iedere component is breder toepasbaar, dus niet alleen voor de Wijkzorg, en niet alleen voor gemeente Amsterdam. Deze DSWA API specificatie is wel de gebundelde API voor alle componenten en operaties in het DSWA."
+  version: "0.2"
+  title: Digitaal Stelsel Wijkzorg Amsterdam API
+  contact:
+    email: dswa@amsterdam.nl
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: https://virtserver.swaggerhub.com/Wijkzorg-Amsterdam/DSWA/1.0.0
+    description: Deze API specificatie is gemaakt met behulp van SwaggerHub tooling. SwaggerHub maakt dan ook meteen een API Auto Mock-Up. 
+  - url: https://dswa.amsterdam.nl/v1.0
+    description: In de praktijk moet de DSWA API een eigen Amsterdamse URL krijgen.
+tags:
+  - name: extern
+    description: Calls die beschikbaar gesteld worden voor de cli&euml;ntvolgsystemen van de ketenpartners, en voor de DSWA GUI die professionals van ketenpartners ook kunnen gebruiken.
+  - name: dswa_gui
+    description: Calls die alleen beschikbaar gesteld worden voor de DSWA GUI die professionals van ketenpartners kunnen gebruiken.
+  - name: intern
+    description: Calls die alleen beschikbaar zijn voor de interne werking van het stelsel zelf.
+  - name: professional
+    description: Calls die voor professionals beschikbaar worden gesteld. Een regievoerder is ook altijd een professional, maar niet iedere  professional is ook regievoerder.
+  - name: regievoerder
+    description: Calls die alleen voor regievoerders beschikbaar worden gesteld. Een regievoerder co&ouml;rdineert de zorg en ondersteuning rondom een cli&euml;nt, en is inhoudelijk aanspreekpunt voor andere professionals. Een regievoerder heeft extra regievoerende taken en verantwoordelijkheden ten opzichte van andere professionals. Klanthouders, klantmanagers, trajecthouders, gezinsmanagers zijn voorbeelden van regievoerders. 
+  - name: administratie
+    description: Calls die voor administratieve krachten beschikbaar worden gesteld. Een administratieve kracht kan niet tegelijkertijd de rol wijkzorgprofessional of klanthouder hebben
+  - name: beheerder
+    description: Calls die alleen voor beheerders beschikbaar worden gesteld
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /woonplaatscheck:
+    get:
+      tags:
+        - extern
+        - professional
+      summary: Controle van de actuele woonplaats op basis van het bsn.
+      description: Met de woonplaatscheck kan gecontroleerd worden of de cli&euml;nt op basis van z'n actuele woonplaats in aanmerking komt voor door de gemeente ondersteunde dienstverlening.
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van degene van wie je de woonplaats wilt controleren.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: geboortedatum
+          description: Geboortedatum van degene van wie je de woonplaats wilt controleren. Door ook de geboortedatum verplicht te stellen als input-parameter is deze operatie beter bestand tegen onbedoeld gebruik.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: De zoekresultaten op basis van de ingevoerde parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/woonplaats'
+        default:
+          description: Er ging iets niet helemaal goed...
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /regiecheck:
+    get:
+      tags:
+        - extern
+        - professional
+      summary: Iedere professional die met een nieuwe cli&euml;nt te maken krijgt dient eerst een regiecheck uit voeren.
+      description: De regiecheck is nodig om de regievoerende professionals te vinden die al met de cli&euml;nt bezig zijn. Deze call wordt afgehandeld door de Zorgco&ouml;rdinatie Index component. Aan de hand van het BSN van een cli&euml;nt worden de contactgegevens van de bij de cli&euml;nt betrokken regievoerende professionals geleverd
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van degene van wie je de regievoerder(s) wilt opzoeken
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: geboortedatum
+          description: Geboortedatum van degene van wie je de woonplaats wilt controleren. Door ook de geboortedatum verplicht te stellen als input-parameter is deze operatie beter bestand tegen onbedoeld gebruik.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: De zoekresultaten op basis van de ingevoerde parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/regievoering'
+        default:
+          description: Er ging iets niet helemaal goed...
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /plandeler:
+    get:
+      tags:
+        - intern
+        - regievoerder
+      summary: Ingang voor alle mogelijkheden rondom de Plandeler
+      description: Ingang voor alle mogelijkheden rondom de Plandeler
+      responses:
+        '200':
+          description: De verschillende mogelijkheden van de plandeler in de vorm van een of meer sub-url's
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        default:
+          description: Er ging iets niet helemaal goed...
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /plandeler/template:
+    get:
+      tags:
+        - extern
+        - regievoerder
+      summary: Geeft de actuele template van het bedoelde (ondersteunings- / traject- / perspectief- / gezins- / ...-)plan
+      description:  De templates van de verschillende plannen veranderen nog wel eens. Het is van belang om vooraf de actueel geldende template op te halen. Nog beter is het om de [online Plandeler functionaliteit](/planmaker/gui) te gebruiken.
+      parameters:
+        - in: query
+          name: plan_type
+          description: Het type plan waarvoor je de template wilt ophalen
+          required: true
+          schema:
+            type: string
+            example: Ondersteuningsplan / Trajectplan / Perspectiefplan / Gezinsplan / HbH Afsprakenoverzicht / Behandelplan / ...
+      responses:
+        '200':
+          description: De actueel geldende template
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/template'
+        default:
+          description: Er ging iets niet helemaal goed...
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorModel'
+  /plan:
+    get:
+      tags:
+        - extern
+        - regievoerder
+      parameters:
+        - in: query
+          name: id
+          description: Id van het plan dat je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/plan'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - extern
+        - regievoerder
+      summary: Voegt een (ondersteunings- / traject- / perspectief- / gezins- / ...-)plan toe
+      operationId: addPlan
+      description: Voegt een plan toe aan het DSWA, om in de DSWA GUI af te maken, om te delen met de cliënt, om inzage te geven aan andere professionals, of om over te dragen.
+      responses:
+        '201':
+          description: Plan toegevoegd
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/plan'
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuw_plan'
+        description: Het plan dat toegevoegd moet worden, bij voorkeur al zover mogelijk gevuld op basis van informatie in het eigen clientvolgsysteem. De client-id en opsteller-id zijn bij het clientvolgsysteem bekend dankzij de eerdere http post /regievoering call
+        required: true
+    put:
+      tags:
+        - extern
+        - regievoerder
+      summary: Aanpasssen van een (ondersteunings- / traject- / perspectief- / gezins- / ...-)plan
+      description: Aanpassen van een plan in de DSWA Plandeler. Het gaat hier om kleine aanpassingen, bijvoorbeeld het toevoegen van een nieuwe contactpersoon, of een aanpassing in de doelen en acties. Voor aanpassingen ten gevolge van een evaluatie of in verband met nieuwe toekenningen moet een nieuwe versie van het ondersteuningsplan gemaakt worden.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/plan'
+        description: Het plan dat aangepast moet worden
+        required: true
+      responses:
+        '200':
+          description: Info in het plan aangepast
+        '400':
+          description: 'invalid input, object invalid'
+  /professional:
+    get:
+      tags:
+        - intern
+      parameters:
+        - in: query
+          name: naam
+          description: Naam van de professional die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/professional'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - intern
+      summary: Voegt een Professional toe
+      operationId: addProfessional
+      description: Voegt een Professional toe aan de DSWA professionals lijst
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuwe_professional'
+        description: De professional die aan de DSWA professionals-lijst toegevoegd moet worden
+        required: true
+  /client:
+    get:
+      tags:
+        - dswa_gui
+      summary: Opvragen van de cli&euml;nt-gegevens waarover het DSWA beschikt. 
+      description: Het DSWA beschikt in principe alleen over anonieme cli&euml;nten, van iedere cli&euml;nt is alleen bsn en geboortedatum in het DSWA beschikbaar. Het DSWA is geen cli&euml;ntvolgsysteem.
+      parameters:
+        - in: query
+          name: bsn
+          description: Burgerservicenummer van de cli&euml;nt die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/client'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - intern
+      summary: Voegt een cli&euml;nt toe
+      operationId: addClient
+      description: Voegt een cli&euml;nt toe aan de ZCI. In principe moeten cli&euml;nten alleen toegevoegd worden met een Melding Regievoering, en dus niet als losse actie.
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuwe_client'
+        description: De cli&euml;nt die aan de ZCI toegevoegd moet worden
+        required: true
+  /regievoering:
+    get:
+      tags:
+        - intern
+      summary: Bekijk een specifieke regievoering-relatie
+      operationId: zoekRegievoerders
+      description: Aan de hand van het regievoering_id wordt de info van de desbetreffende regievoering-relatie geleverd.
+      parameters:
+        - in: query
+          name: regievoering_id
+          description: Id van de regievoering die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/regievoering'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - extern
+      summary: Voegt een Regievoering relatie toe
+      operationId: addRegievoering
+      description: Voegt een Regievoering relatie toe aan de ZCI
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuwe_regievoering'
+        description: De Regievoering relatie die aan de ZCI toegevoegd moet worden
+        required: true
+    put:
+      tags:
+        - extern
+      summary: Wijzigt een bestaande Regievoering relatie
+      operationId: addRegievoering
+      description: Wijzigt een bestaande Regievoering relatie in de ZCI, bijvoorbeeld bij be&euml;indiging van de regievoering, of bij overdracht naar een andere regievoerder (maar dat is ook be&euml;indiging van de eerdere regievoering en starten van een nieuwe regievoering relatie)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/regievoering'
+        description: De Regievoering relatie die gewijzigd moet worden
+        required: true
+      responses:
+        '200':
+          description: Regievoering info aangepast
+        '400':
+          description: 'invalid input, object invalid'
+  /toekenning:
+    get:
+      tags:
+        - intern
+      summary: Vraag een specifieke toekenning op
+      description: Voor het opvragen van gemeentelijke info over een cliënt (waaronder de voor hem geldende toekenningen) is de call GET /client_Wmo_info bedoeld
+      parameters:
+        - in: query
+          name: toekenning_id
+          description: Id van de toekenning die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/toekenning'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - extern
+      summary: Een toegekend Recht op een Voorziening
+      operationId: addToekenning
+      description: Melding van een Toekenning, oftewel een toegekend Recht op een Voorziening. Deze meldingen worden doorgezet naar de gemeentelijke Backoffice.
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuwe_toekenning'
+        description: De Toekenning die aan de gemeentelijke Backoffice gemeld moet worden
+        required: true
+  /autorisatie:
+    get:
+      tags:
+        - intern
+      parameters:
+        - in: query
+          name: autorisatie_id
+          description: Id van de autorisatie die je wilt opzoeken
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/autorisatie'
+        '400':
+          description: bad input parameter
+    post:
+      tags:
+        - extern
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/nieuwe_autorisatie'
+        description: De autorisatie voor inzage in een ondersteuningsplan
+        required: true
+components:
+  schemas:
+    ErrorModel:
+      type: object
+      required:
+      - message
+      - code
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+          minimum: 100
+          maximum: 600
+    nieuwe_client:
+      description: Een nieuw op te voeren cli&euml;nt, normaal gesproken via een melding van een nieuwe regievoering aan de Zorgco&ouml;rdinatie Index component. Van een cli&euml;nt is in het DSWA alleen maar het bsn en de geboortedatum bekend, verder niets. Het DSWA is g&eacute;&eacute;n cli&euml;ntvolgsysteem.
+      type: object
+      required:
+        - bsn
+        - geboortedatum
+      properties:
+        bsn:
+          description: Het burgerservicenummer van de cli&euml;nt. Het bsn is een rij van 9 cijfers die onderling 11-proef moeten zijn. Let op, bsn’s kunnen met een of meer 0'en beginnen en zijn zelf dus geen getal.
+          type: string
+          example: 595698888
+        geboortedatum:
+          description: De geboortedatum van de cli&euml;nt. Om onbedoeld gebruik van het DSWA te voorkomen is altijd de combinatie van bsn en geboortedatum nodig.
+          type: string
+          format: date
+          example: 1999-12-31
+    client:
+      description: Cli&euml;nten waarvoor een DSWA gebruiker een of meer van de DSWA componenten gebruikt heeft. Van een cli&euml;nt is in het DSWA alleen maar het bsn en de geboortedatum bekend, verder niets. Het DSWA is g&eacute;&eacute;n cli&euml;ntvolgsysteem.
+      type: object
+      required:
+        - id
+        - bsn
+        - geboortedatum
+      properties:
+        id:
+          description: Het DSWA-id van de cli&euml;nt. Het is tegenwoordig gangbaar om uuid's hiervoor te gebruiken.
+          type: string
+          format: uuid
+          example: 9ef8e96d-3ea9-4406-9f85-4c8f467c6fd3
+        bsn:
+          description: Het burgerservicenummer van de cli&euml;nt
+          type: string
+          example: 414633106
+        geboortedatum:
+          description: De geboortedatum van de cli&euml;nt. Om onbedoeld gebruik van het DSWA te voorkomen is altijd de combinatie van bsn en geboortedatum nodig.
+          type: string
+          format: date
+          example: 1999-12-31
+    woonplaats:
+      type: object
+      required:
+        - woonplaats
+      properties:
+        woonplaats:
+          type: string
+          example: Amsterdam / Weesp
+    contactpersoon:
+      type: object
+      required:
+        - naam
+        - tel
+        - e-mail
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7de5bec1-1808-4721-8976-026a7100096a
+        naam:
+          type: string
+          example: Piet Pietersen
+        tel:
+          type: string
+          example: 0687654321
+        e-mail:
+          type: string
+          example: piet.pietersen@contact.nl
+        rolaanduiding:
+          type: string
+          example: Bewindvoerder / Curator / Mentor / Ouder / Voogd
+    nieuwe_professional:
+      type: object
+      required:
+        - naam
+        - tel
+        - e-mail
+      properties:
+        naam:
+          type: string
+          example: Jan Jansen
+        tel:
+          type: string
+          example: 0612345678
+        e-mail:
+          type: string
+          example: jan.jansen@zorgt.nl
+        organisatie:
+          type: string
+          example: Q-Zorg
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+    professional:
+      type: object
+      required:
+        - naam
+        - tel
+        - e-mail
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a864abb6-e9cf-4fac-935a-bc17c7376327
+        naam:
+          type: string
+          example: Jan Jansen
+        tel:
+          type: string
+          example: 0612345678
+        e-mail:
+          type: string
+          example: jan.jansen@zorgt.nl
+        organisatie:
+          type: string
+          example: Q-Zorg
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        professional-url:
+          type: string
+          example: https://cordaan.nl/professionals/0b562e54-4983-49ae-af30-c01d223408b2
+    zorgaanbieder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a864abb6-e9cf-4fac-935a-bc17c7376327
+        url:
+          type: string
+          example: "https://dswa.amsterdam.nl/productcatalogus/aanbieder/a864abb6-e9cf-4fac-935a-bc17c7376327"
+        naam:
+          type: string
+          example: Amstra
+    regievoerder:
+      type: object
+      required:
+        - naam
+        - tel
+        - e-mail
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: a864abb6-e9cf-4fac-935a-bc17c7376327
+        naam:
+          type: string
+          example: Jan Jansen
+        tel:
+          type: string
+          example: 0612345678
+        e-mail:
+          type: string
+          example: jan.jansen@zorgt.nl
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        regievoerder-url:
+          type: string
+          example: https://cordaan.nl/professionals/0b562e54-4983-49ae-af30-c01d223408b2
+    nieuwe_regievoering:
+      type: object
+      required:
+        - regievoerder-id
+        - client-bsn
+      properties:
+        regievoerder-id:
+          type: string
+          format: uuid
+          example: 9dc48784-cac5-4b55-b7db-de0118466991
+        client-bsn:
+          type: string
+          example: 414633106
+        client-geboortedatum:
+          type: string
+          format: date
+          example: "1935-05-27"
+        start-regievoering:
+          type: string
+          format: date
+          example: "2017-07-30"
+        einde-regievoering:
+          type: string
+          format: date
+          example: "2019-07-30"
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        oproep:
+          type: string
+          example: Contact opnemen dringend noodzakelijk!!!
+    regievoering:
+      type: object
+      required:
+        - professional_naam
+        - professional_tel
+        - professional_e-mail
+        - client-bsn
+        - start-regievoering
+      properties:
+        professional_id:
+          type: string
+          format: uuid
+          example: a864abb6-e9cf-4fac-935a-bc17c7376327
+        professional_naam:
+          type: string
+          example: Jan Jansen
+        professional_tel:
+          type: string
+          example: 0612345678
+        professional_e-mail:
+          type: string
+          example: jan.jansen@zorgmail.nl
+        professional-url:
+          type: string
+          example: https://zorgt.nl/professionals/a864abb6-e9cf-4fac-935a-bc17c7376327
+        client-bsn:
+          type: string
+          example: 414633106
+        start-regievoering:
+          type: string
+          format: date
+          example: 2017-07-30
+        einde-regievoering:
+          type: string
+          format: date
+          example: 2017-07-30
+        domein:
+          type: string
+          example: Wijkzorg / Schuldhulpverlening / MO/BW / Jeugd / OOV
+        oproep:
+          type: string
+          example: Contact opnemen dringend noodzakelijk!!!
+    nieuw_plan:
+      description: Object voor het aanmaken van een nieuw plan. Meegegeven moet worden voor welke cli&euml;nt het plan bedoeld is, en wie de opsteller van het plan is. De opsteller moet een regievoering-relatie hebben met de cli&euml;nt. Met een regiecheck wordt de relatie cli&euml;nt - regievoerder gecontroleerd.
+      type: object
+      required:
+        - client_id
+        - client_achternaam
+        - client_voornaam
+        - opsteller_id
+      properties:
+        client_id:
+          type: string
+          format: uuid
+          example: 6bf2d4bd-c2ff-479b-a86f-790f4c77c345
+        client_achternaam:
+          type: string
+          example: van der Zande
+          description: Voor- en achternaam van de cliënt zijn van belang om weer te kunnen geven op het ondersteuningsplan. Het DSWA gebruikt de voor- en achternaam verder niet.
+        client_voornaam:
+          type: string
+          example: Willem
+          description: Voor- en achternaam van de cliënt zijn van belang om weer te kunnen geven op het ondersteuningsplan. Het DSWA gebruikt de voor- en achternaam verder niet.
+        opsteller_id:
+          type: string
+          format: uuid
+          example: 6bf2d4bd-c2ff-479b-a86f-790f4c77c345
+        soort_plan:
+          type: string
+          enum:
+            - Ondersteuningsplan
+            - Trajectplan
+            - Perspectiefplan
+            - HbH Afsprakenoverzicht
+          default:
+            - Ondersteuningsplan
+        doelen:
+          $ref: '#/components/schemas/doelen'
+    plan:
+      type: object
+      required:
+        - id
+        - url
+        - client
+        - opsteller
+        - datum-opgesteld
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          example: https://zorgt.nl/ondersteuningsplan/0b562e54-4983-49ae-af30-c01d223408b2
+        client:
+          $ref: '#/components/schemas/client'
+        contactpersoon:
+          $ref: '#/components/schemas/contactpersoon'
+        opsteller:
+          $ref: '#/components/schemas/regievoerder'
+        soort_plan:
+          type: string
+          enum:
+            - Ondersteuningsplan
+            - Trajectplan
+            - Perspectiefplan
+            - HbH Afsprakenoverzicht
+          default:
+            - Ondersteuningsplan
+        datum-opgesteld:
+          type: string
+          format: date
+          example: '2016-08-29'
+        doelen:
+          $ref: '#/components/schemas/doelen'
+        ondertekening:
+          $ref: '#/components/schemas/ondertekening'
+    doelen:
+      type: array
+      items:
+          $ref: '#/components/schemas/doel'
+    doel:
+      type: object
+      properties:
+        doelomschrijving:
+          type: string
+          example: Zelfredzaamheid / Onder de mensen / Aanspraak / Een schoon en opgeruimd huis / Opvang geregeld / ...
+        acties:
+          type: array
+          items:
+            $ref: '#/components/schemas/actie'
+        toekenningen:
+          type: array
+          items:
+            $ref: '#/components/schemas/nieuwe_toekenning'
+    actie:
+      description: In het ondersteuningsplan worden doelen met bijbehorende acties opgenomen
+      type: string
+      example: Er op uit / Bellen met ... / Lid worden van ... / 
+    nieuwe_toekenning:
+      type: object
+      required:
+        - product
+        - productvariant
+        - leveringsvorm
+        - resultaatgebied
+        - datum_hulpvraag
+        - begindatum
+        - einddatum
+        - client
+      properties:
+        product:
+          $ref: '#/components/schemas/product'
+        productvariant:
+          $ref: '#/components/schemas/productvariant'
+        leveringsvorm:
+          type: string
+          example: Zorg in Natura / Persoonsgebonden budget
+        leverancier:
+          $ref: '#/components/schemas/zorgaanbieder'
+        resultaatgebieden:
+          type: array
+          items:
+             $ref: '#/components/schemas/resultaatgebied'
+        datum_melding:
+          type: string
+          format: date
+          example: '2016-06-29'
+        begindatum:
+          type: string
+          format: date
+          example: '2016-08-29'
+        einddatum:
+          type: string
+          format: date
+          example: '2017-08-29'
+        client:
+          $ref: '#/components/schemas/client'
+        ondertekende-plan:
+          $ref: '#/components/schemas/plan'
+        plan_url:
+          description: De url van het ondersteuningsplan dat aan deze toekenning ten grondslag ligt.
+          type: string
+          example: https://zorgt.nl/ondersteuningsplan/f8eb3037-7edf-4f29-b621-7182557b9319
+    toekenning:
+      type: object
+      required:
+        - id
+        - url
+        - product
+        - productvariant
+        - leveringsvorm
+        - resultaatgebied
+        - datum_melding
+        - begindatum
+        - einddatum
+        - client
+        - ondertekende-plan
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 0496823c-9e16-4b74-9dbf-d82ff6d84e45
+        url:
+          type: string
+          example: https://zorgt.nl/toekenning/a9c0667b-5f99-4c24-9054-eb2fca569be6
+        product:
+          $ref: '#/components/schemas/product'
+        productvariant:
+          $ref: '#/components/schemas/productvariant'
+        leveringsvorm:
+          type: string
+          example: Zorg in Natura / Persoonsgebonden budget
+        leverancier:
+          $ref: '#/components/schemas/zorgaanbieder'
+        resultaatgebieden:
+          type: array
+          items:
+             $ref: '#/components/schemas/resultaatgebied'
+        datum_melding:
+          type: string
+          format: date
+          example: '2016-06-29'
+        begindatum:
+          type: string
+          format: date
+          example: '2016-08-29'
+        einddatum:
+          type: string
+          format: date
+          example: '2017-08-29'
+        client:
+          $ref: '#/components/schemas/client'
+        ondertekende-plan:
+          $ref: '#/components/schemas/plan'
+    nieuwe_autorisatie:
+      type: object
+      required:
+        - van_wie
+        - namens_wie
+        - voor_wie
+        - waarvoor
+        - begin
+      properties:
+        van_wie:
+          description: De url van de klanthopuder die de autorisatie verleend
+          type: string
+          example: https://dswa.amsterdam.nl/professional/93b4a12f-7cf7-4027-bfb1-f5c522c89c99
+        namens_wie:
+          type: string
+          example: https://dswa.amsterdam.nl/client/7d491519-a346-4ef9-a3cc-5076844ac5db
+        voor wie:
+          type: string
+          example: https://dswa.amsterdam.nl/professional/6d207556-1ec5-4df6-b741-a2420abcf496
+        waarvoor:
+          type: string
+          example: https://dswa.amsterdam.nl/plan/3b59aead-04f0-4939-8d86-27d5fce645ab
+        begin:
+          type: string
+          format: date
+          example: '2016-08-29'
+    autorisatie:
+      type: object
+      required:
+        - id
+        - url
+        - van_wie
+        - namens_wie
+        - voor_wie
+        - waarvoor
+        - begin
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 6fcd1c26-9eeb-4776-9715-7b97f87247df
+        url:
+          type: string
+          example: https://dswa.amsterdam.nl/autorisatie/6fcd1c26-9eeb-4776-9715-7b97f87247df
+        van_wie:
+          description: De url van de klanthopuder die de autorisatie verleend
+          type: string
+          example: https://dswa.amsterdam.nl/professional/93b4a12f-7cf7-4027-bfb1-f5c522c89c99
+        namens_wie:
+          type: string
+          example: https://dswa.amsterdam.nl/client/7d491519-a346-4ef9-a3cc-5076844ac5db
+        voor wie:
+          type: string
+          example: https://dswa.amsterdam.nl/professional/6d207556-1ec5-4df6-b741-a2420abcf496
+        waarvoor:
+          type: string
+          example: https://dswa.amsterdam.nl/plan/3b59aead-04f0-4939-8d86-27d5fce645ab
+        begin:
+          type: string
+          format: date
+          example: '2016-08-29'
+        einde:
+          type: string
+          format: date
+          example: '2017-08-29'
+    advies-aanvraag:
+      type: object
+      required:
+        - id
+        - url
+        - product
+        - productvariant
+        - resultaatgebied
+        - begindatum
+        - einddatum
+        - client
+        - ondertekende-plan
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 69bcdf2d-1471-4075-9841-a80ed42144fa
+        url:
+          type: string
+          example: https://dswa.amsterdam.nl/advies-aanvraag/69bcdf2d-1471-4075-9841-a80ed42144fa
+        product:
+          $ref: '#/components/schemas/product'
+        productvariant:
+          $ref: '#/components/schemas/productvariant'
+        leverancier:
+          $ref: '#/components/schemas/zorgaanbieder'
+        resultaatgebieden:
+          type: array
+          items:
+             $ref: '#/components/schemas/resultaatgebied'
+        begindatum:
+          type: string
+          format: date
+          example: '2016-08-29'
+        einddatum:
+          type: string
+          format: date
+          example: '2017-08-29'
+        client:
+          $ref: '#/components/schemas/client'
+        ondertekende-plan:
+          $ref: '#/components/schemas/plan'
+    nieuwe_ondertekening:
+      type: object
+      required:
+        - ondertekenaar
+        - datum
+        - ondertekende-plan-url
+      properties:
+        url:
+          type: string
+          description: De URL waarmee de ondertekening te bekijken is, voor het geval dat de ondertekening vastgelegd is in of bij het ECD van de zorgaanbieder.
+          example: https://zorgt.nl/ondertekening/0b562e54-4983-49ae-af30-c01d223408b2
+        datum:
+          type: string
+          format: date
+          example: '2016-08-29'
+          description: Van wanneer is deze ondertekening?
+        ondertekenaar:
+          $ref: '#/components/schemas/client'
+        ondertekende-plan-url:
+          type: string
+          description: De URL van het document waar deze ondertekening voor geldt.
+        foto:
+          type: string
+          format: base64
+          description: In het geval dat de ondertekening op een papieren versie van het document is gezet moet er een foto meegestuurd worden van die handtekening
+    ondertekening:
+      type: object
+      required:
+        - id
+        - url
+        - ondertekenaar
+        - datum
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          description: De URL waarmee de ondertekening te bekijken is.
+          example: https://zorgt.nl/ondertekening/0b562e54-4983-49ae-af30-c01d223408b2
+        datum:
+          type: string
+          format: date
+          example: '2016-08-29'
+        ondertekenaar:
+          $ref: '#/components/schemas/client'
+        ondertekende-plan-url:
+          type: string
+          description: De URL van het document waar deze ondertekening voor geldt.
+        foto:
+          type: string
+          format: base64
+          description: In het geval dat de ondertekening op een papieren versie van het document is gezet moet er een foto meegestuurd worden van die handtekening
+    template:
+      type: object
+      required:
+        - id
+        - type
+        - versie
+        - geldig_sinds
+        - url
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 90998beb-cc20-4166-bde1-773cc8a30ef2
+        type:
+          type: string
+          example: Ondersteuningsplan / Perspectiefplan / Trajectplan / Afsprakenoverzicht / Behandelplan / ...
+        versie:
+          type: string
+          example: v3.2 20180831
+        url:
+          type: string
+          description: De URL waarmee de template op te halen is
+          example: https://dswa.amsterdam.nl/planmaker/template/90998beb-cc20-4166-bde1-773cc8a30ef2
+    product:
+      type: object
+      required:
+        - id
+        - url
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        url:
+          type: string
+          example: https://dswa.amsterdam.nl/productcatalogus/product/d290f1ee-6c54-4b01-90e6-d701748f0851
+        name:
+          type: string
+          example: Hulp bij Huishouden / Ambulante ondersteuning / Dagbesteding / Logeeropvang
+    productvariant:
+      type: object
+      required:
+        - id
+        - url
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: e46ecc71-4a96-4c72-891c-712af1123469
+        url:
+          type: string
+          example: https://dswa.amsterdam.nl/productcatalogus/product/d290f1ee-6c54-4b01-90e6-d701748f0851/variant/e46ecc71-4a96-4c72-891c-712af1123469
+        name:
+          type: string
+          example: Omschrijving van de precieze variant van Hulp bij Huishouden / Ambulante ondersteuning / Dagbesteding / Logeeropvang
+    resultaatgebied:
+      type: string
+      enum:
+        - Schoon en leefbaar huis
+        - Meedoen in de samenleving
+        - Meewerken in de samenleving
